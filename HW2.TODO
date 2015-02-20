@@ -1,0 +1,13 @@
+Week1 Feb 20 - Feb 27:
+  ✔ Test all trivial implementations on Hopper @done (15-02-20 14:46)
+  ☐ Understand the elementary implementation
+  ☐ Implement the O(n) serial algorithm 
+    ☐ Define a struct "bin" that has the following attribute:
+      1. x, y -> The coordinate of its left bottom corner 
+      2. An array or list of particles that are in the bin
+    ☐ Create a list of "bin"s, just like a matrix, we know that length of the bin = cutoff, so we know the grid
+      One advantage of this "matrix" is that finding neighbors of bins is quite easy
+    ☐ Instead of iterating through the particles, we iterate through the bins and the particles in the bins
+      In this step for each bin we only apply forces from neighboring bins
+    ☐ The hard part is moving the particles
+      Whenever we move a particle, we have to determine its new "bin", then delete it from the original bin, add it to the new one
