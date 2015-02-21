@@ -1,13 +1,23 @@
 Week1 Feb 20 - Feb 27:
   ✔ Test all trivial implementations on Hopper @done (15-02-20 14:46)
-  ☐ Understand the elementary implementation
+  ✔ Understand the elementary implementation @done (15-02-20 23:35)
   ☐ Implement the O(n) serial algorithm 
-    ☐ Define a struct "bin" that has the following attribute:
+    ✔ Define a struct "bin" that has the following attribute: @done (15-02-20 23:32)
       1. x, y -> The coordinate of its left bottom corner 
       2. An array or list of particles that are in the bin
-    ☐ Create a list of "bin"s, just like a matrix, we know that length of the bin = cutoff, so we know the grid
+      3. Method -> outOfBound that determines if a particle is out of the bin
+      4. Method -> delete to delete a certain particle
+      5. Method -> add to add a particle in the list
+    ✔ Create a list of "bin"s, just like a matrix, we know that length of the bin = cutoff, so we know the grid @done (15-02-20 23:32)
       One advantage of this "matrix" is that finding neighbors of bins is quite easy
+    ✔ Add all the particles to the list of bins, and do sanity check @done (15-02-20 23:35)
     ☐ Instead of iterating through the particles, we iterate through the bins and the particles in the bins
       In this step for each bin we only apply forces from neighboring bins
     ☐ The hard part is moving the particles
       Whenever we move a particle, we have to determine its new "bin", then delete it from the original bin, add it to the new one
+      This also means that the data structure we use for the list of particles should support insert and delete efficiently, i.e STL -> Set
+  ☐ Implement the pthreads algorithm(details need to be confirmed)
+
+ Week 2 Feb 28 - Mar 6:
+   ☐ Implement the OpenMp and MPI algorithm
+   ☐ Write the report

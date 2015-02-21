@@ -44,6 +44,33 @@ void set_size( int n )
     size = sqrt( density * n );
 }
 
+int getBinNum()
+{
+    return int(size / cutoff);
+}
+
+bin_t* initBins()
+{
+    int numBins = getBinNum(); // The number of bins in each row and column
+    bin_t *bins = (bin_t*) malloc(numBins * numBins * sizeof(bin_t));
+    for (int i = 0; i < numBins; ++i)
+    {
+        for (int j = 0; j < numBins; ++j)
+        {
+            // This is the (i, j)th bin in the grid
+            bins[i + j * numBins].x = j * cutoff;
+            bins[i + j * numBins].y = i * cutoff;
+            bins[i + j * numBins].x_length = cutoff;
+            bins[i + j * numBins].y_length = cutoff;
+            bins[i + j * numBins].particles = new std::list<particle_t>;
+            // Adjust for the bins on the edges of the grid
+            if (j == numBins - 1) bins[i + j * numBins].x_length = size - (numBins - 1) * cutoff;
+            if (i == numBins - 1) bins[i + j * numBins].y_length = size - (numBins - 1) * cutoff;
+        }
+    }
+    return bins;
+}
+
 //
 //  Initialize the particle positions and velocities
 //

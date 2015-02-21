@@ -2,7 +2,24 @@
 #include <stdio.h>
 #include <assert.h>
 #include <math.h>
+#include <iostream>
 #include "common.h"
+using namespace std;
+
+
+bool sanityCheckOfBins(bin_t *bins, int binSize, int n)
+{
+    // This is for insanity check
+    int sum = 0;
+    for (int i = 0; i < binSize; ++i){
+        //printf("bin %d contains %d particles\n", i, bins[i].numParticles());
+        sum += bins[i].numParticles();
+
+    }
+
+    printf("The total number of particles in the bins is %d\n", sum);
+    return sum == n;
+}
 
 //
 //  benchmarking program
@@ -32,13 +49,40 @@ int main( int argc, char **argv )
     FILE *fsum = sumname ? fopen ( sumname, "a" ) : NULL;
 
     particle_t *particles = (particle_t*) malloc( n * sizeof(particle_t) );
-    set_size( n );
+    set_size( n ); // Calculate the size
     init_particles( n, particles );
     
     //
     //  simulate a number of time steps
     //
     double simulation_time = read_timer( );
+
+    // Here is a test for the "bin" struct
+    bin_t* bins = initBins();
+    int numBins = getBinNum();
+    double binLength = bins[0].x_length;
+
+    printf("The number of bins in a row is %d\n", numBins);    
+    if (numBins < 0) printf("true\n");
+    for (int i = 0; i < numBins; ++i)
+    {
+        printf("%d\n", i);
+        for (int j = 0; j < numBins; ++j)
+        {
+            printf("The (%d, %d)th bin has corner: (%f, %f), and with xlength: %f, ylength: %f\n", i, j, bins[i + j * numBins].x, bins[i + j * numBins].y
+                , bins[i + j * numBins].x_length, bins[i + j * numBins].y_length);
+        }
+    }
+
+    // We have to iterate through all the particles and put them in corresponding bins.
+    for (int i = 0; i < n; ++i)
+    {
+        int row = int(particles[i].x / binLength);
+        int col = int(particles[i].y / binLength);
+        bins[row + col * numBins].addParticle(particles[i]);
+    }
+
+    //sanityCheckOfBins(bins, numBins * numBins, n);
 	
     for( int step = 0; step < NSTEPS; step++ )
     {

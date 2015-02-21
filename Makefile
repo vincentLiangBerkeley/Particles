@@ -3,7 +3,7 @@
 #
 # Portland Group Compilers PGI are loaded by default; for other compilers please check the module list
 #
-CC = CC
+CC = g++
 MPCC = CC
 OPENMP = -mp
 CFLAGS = -O3

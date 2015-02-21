@@ -1,5 +1,6 @@
 #ifndef __CS267_COMMON_H__
 #define __CS267_COMMON_H__
+#include <list>
 
 inline int min( int a, int b ) { return a < b ? a : b; }
 inline int max( int a, int b ) { return a > b ? a : b; }
@@ -27,6 +28,25 @@ typedef struct
 //  timing routines
 //
 double read_timer( );
+
+typedef struct 
+{
+    double x;
+    double y;
+    double x_length;
+    double y_length;
+    std::list<particle_t> *particles;
+    inline int numParticles() {return particles -> size();}
+    // Checks whether the particle is out of this bin
+    inline bool outOfBound(particle_t particle) {return (particle.x < x || particle.x > x + x_length || particle.y < y || particle.y > y + y_length);}
+    // Add a particle to the bin
+    inline void addParticle(particle_t particle) {particles -> push_back(particle);}
+
+} bin_t;
+
+// Initialize all the bins
+bin_t* initBins();
+int getBinNum();
 
 //
 //  simulation routines
