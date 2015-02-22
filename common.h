@@ -36,6 +36,7 @@ typedef struct
     double x_length;
     double y_length;
     std::list<particle_t> *particles;
+    inline bool isEmpty() {return particles -> empty();}
     inline int numParticles() {return particles -> size();}
     // Checks whether the particle is out of this bin
     inline bool outOfBound(particle_t particle) {return (particle.x < x || particle.x > x + x_length || particle.y < y || particle.y > y + y_length);}
@@ -47,6 +48,8 @@ typedef struct
 // Initialize all the bins
 bin_t* initBins();
 int getBinNum();
+// Apply force from a bin to a particle
+void applyForceFromBin(bin_t bin, particle_t &particle, double *dmin, double *davg, int *navg);
 
 //
 //  simulation routines

@@ -109,6 +109,15 @@ void init_particles( int n, particle_t *p )
     free( shuffle );
 }
 
+void applyForceFromBin(bin_t bin, particle_t &particle, double *dmin, double *davg, int *navg)
+{
+    if (bin.isEmpty()) return;
+    for (std::list<particle_t>::iterator i = bin.particles->begin(); i != bin.particles -> end(); ++i)
+    {
+       apply_force(particle, *i, dmin, davg, navg);
+    }
+}
+
 //
 //  interact two particles
 //
