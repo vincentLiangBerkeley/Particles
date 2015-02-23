@@ -11,6 +11,7 @@ Week1 Feb 20 - Feb 27:
     ✔ Create a list of "bin"s, just like a matrix, we know that length of the bin = cutoff, so we know the grid @done (15-02-20 23:32)
       One advantage of this "matrix" is that finding neighbors of bins is quite easy
     ✔ Add all the particles to the list of bins, and do sanity check @done (15-02-20 23:35)
+      What if instead of adding real particles, we add the index of particles? I think this is definitely a better strategy
     ✔ Instead of iterating through the particles, we iterate through the bins and the particles in the bins @done (15-02-22 00:20)
       1.In this step for each bin we only apply forces from neighboring bins
       2.For each bin, we iterate through the list using "iterator" and apply force using "applyForceFromBin" function defined in common.cpp
@@ -18,6 +19,8 @@ Week1 Feb 20 - Feb 27:
       Whenever we move a particle, we have to determine its new "bin", then delete it from the original bin, add it to the new one
       This also means that the data structure we use for the list of particles should support insert and delete efficiently, i.e STL -> Set
     ☐ One problem is that it seems most particles are not interacting
+    ☐ I have changed the implementation of bins so that each bin holds a set of indices of particles
+    ☐ There is segmentation fault after some iterations and I dont know how to solve them.
   ☐ Implement the pthreads algorithm(details need to be confirmed)
 
  Week 2 Feb 28 - Mar 6:

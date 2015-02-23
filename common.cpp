@@ -62,7 +62,7 @@ bin_t* initBins()
             bins[i + j * numBins].y = i * cutoff;
             bins[i + j * numBins].x_length = cutoff;
             bins[i + j * numBins].y_length = cutoff;
-            bins[i + j * numBins].particles = new std::list<particle_t>;
+            bins[i + j * numBins].particleIndices = new std::set<int>;
             // Adjust for the bins on the edges of the grid
             if (j == numBins - 1) bins[i + j * numBins].x_length = size - (numBins - 1) * cutoff;
             if (i == numBins - 1) bins[i + j * numBins].y_length = size - (numBins - 1) * cutoff;
@@ -109,12 +109,13 @@ void init_particles( int n, particle_t *p )
     free( shuffle );
 }
 
-void applyForceFromBin(bin_t bin, particle_t &particle, double *dmin, double *davg, int *navg)
+void applyForceFromBin(bin_t bin, int particleIndex, particle_t *particles, double *dmin, double *davg, int *navg)
 {
     if (bin.isEmpty()) return;
-    for (std::list<particle_t>::iterator i = bin.particles->begin(); i != bin.particles -> end(); ++i)
+    for (std::set<int>::iterator i = bin.particleIndices->begin(); i != bin.particleIndices -> end(); ++i)
     {
-       apply_force(particle, *i, dmin, davg, navg);
+       //printf("applied force from particle %d\n", *i);
+       apply_force(particles[particleIndex], particles[*i], dmin, davg, navg);
     }
 }
 
