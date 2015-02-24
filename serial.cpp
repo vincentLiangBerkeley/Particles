@@ -26,7 +26,10 @@ void assignParticleToBin(bin_t *bins, particle_t *particles, int index, int numB
 {
     double binLength = bins[0].x_length;
     int row = int(particles[index].x / binLength);
+    if (row == numBins) row = numBins - 1;
     int col = int(particles[index].y / binLength);
+    if (col == numBins) col = numBins - 1;
+    //printf("Assigning particle %d at (%f, %f) to bin (%d, %d)\n", index, particles[index].x, particles[index].y, row, col);
     bins[row + col * numBins].addParticle(index);
 }
 
@@ -85,7 +88,6 @@ int main( int argc, char **argv )
     for (int i = 0; i < n; ++i)
         assignParticleToBin(bins, particles, i, numBins);
 
-    //sanityCheckOfBins(bins, numBins * numBins, n);
     for (int step = 0; step < NSTEPS; ++step)
     {
         navg = 0;
@@ -99,10 +101,17 @@ int main( int argc, char **argv )
         {
             for (int j = 0; j < numBins; ++j)
             {
-                if(bins[i + j * numBins].isEmpty()) continue;
+                //printf("Checking bin (%d, %d)\n", i, j);
+                if(bins[i + j * numBins].isEmpty()) 
+                {
+                    //printf("bin (%d, %d) is empty\n", i, j);
+                    continue;
+                }
                 // Apply force from within the bin
                 for(std::set<int>::iterator it = bins[i + j * numBins].particleIndices -> begin(); it != bins[i + j * numBins].particleIndices -> end(); ++it)
+                {
                     applyForceFromBin(bins[i + j * numBins], *it, particles, &dmin, &davg, &navg);
+                }
                 // Iterating through all the bins, handle the edge cases first
                 if (i == 0)
                 {
@@ -164,7 +173,7 @@ int main( int argc, char **argv )
                     }
                     else
                     {
-                        // Just normal edge row, have fine neighbors
+                        // Just normal edge row, have five neighbors
                         for(std::set<int>::iterator it = bins[i + j * numBins].particleIndices -> begin(); it != bins[i + j * numBins].particleIndices -> end(); ++it)
                         {
                             applyForceFromBin(bins[i + (j - 1) * numBins], *it, particles, &dmin, &davg, &navg); // Bin on the left
@@ -175,21 +184,51 @@ int main( int argc, char **argv )
                         }
                     }
                 }
-                // Now just inner bins, have nine neighbors 
-                for(std::set<int>::iterator it = bins[i + j * numBins].particleIndices -> begin(); it != bins[i + j * numBins].particleIndices -> end(); ++it)
+                else if (j == 0 && i > 0 && i < (numBins - 1))
                 {
-                    applyForceFromBin(bins[i + (j - 1) * numBins], *it, particles, &dmin, &davg, &navg); // Bin on the left
-                    applyForceFromBin(bins[i + (j + 1) * numBins], *it, particles, &dmin, &davg, &navg); // Bin on the right
-                    applyForceFromBin(bins[i + j * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin above
-                    applyForceFromBin(bins[i + j * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin below
-                    applyForceFromBin(bins[i + (j - 1) * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin on the left top corner
-                    applyForceFromBin(bins[i + (j + 1) * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin on the right top corner
-                    applyForceFromBin(bins[i + (j - 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the left bottom corner
-                    applyForceFromBin(bins[i + (j + 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the right bottom corner
+                    for(std::set<int>::iterator it = bins[i + j * numBins].particleIndices -> begin(); it != bins[i + j * numBins].particleIndices -> end(); ++it)
+                    {
+                        applyForceFromBin(bins[i + j * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin above
+                        applyForceFromBin(bins[i + j * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin below
+                        applyForceFromBin(bins[i + (j + 1) * numBins], *it, particles, &dmin, &davg, &navg); // Bin on the right
+                        applyForceFromBin(bins[i + (j + 1) * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin on the right top corner
+                        applyForceFromBin(bins[i + (j + 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the right bottom corner
+                    }
                 }
+                else if (j == (numBins - 1) && i > 0 && i < (numBins - 1))
+                {
+                    for(std::set<int>::iterator it = bins[i + j * numBins].particleIndices -> begin(); it != bins[i + j * numBins].particleIndices -> end(); ++it)
+                    {
+                        applyForceFromBin(bins[i + j * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin above
+                        applyForceFromBin(bins[i + j * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin below
+                        applyForceFromBin(bins[i + (j - 1) * numBins], *it, particles, &dmin, &davg, &navg); // Bin on the left
+                        applyForceFromBin(bins[i + (j - 1) * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin on the left top corner
+                        applyForceFromBin(bins[i + (j - 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the left bottom corner
+                    }
+                }
+                else 
+                {
+                    // Now just inner bins, have nine neighbors 
+                    for(std::set<int>::iterator it = bins[i + j * numBins].particleIndices -> begin(); it != bins[i + j * numBins].particleIndices -> end(); ++it)
+                    {
+                        applyForceFromBin(bins[i + (j - 1) * numBins], *it, particles, &dmin, &davg, &navg); // Bin on the left
+                        applyForceFromBin(bins[i + (j + 1) * numBins], *it, particles, &dmin, &davg, &navg); // Bin on the right
+                        applyForceFromBin(bins[i + j * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin above
+                        applyForceFromBin(bins[i + j * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin below
+                        applyForceFromBin(bins[i + (j - 1) * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin on the left top corner
+                        applyForceFromBin(bins[i + (j + 1) * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin on the right top corner
+                        applyForceFromBin(bins[i + (j - 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the left bottom corner
+                        applyForceFromBin(bins[i + (j + 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the right bottom corner
+                    }
+                }
+                
             }
         }
-        for(int i = 0; i < n; i ++) move(particles[i]); // Move particles
+        for(int i = 0; i < n; i ++) 
+        {
+           move(particles[i]); // Move particles
+           //printf("particle %d is moving at a speed %f\n", i, particles[i].vx);
+       }
         // Determine the new bins of the particles
         std::stack<int> movedParticles;
         for (int i = 0; i < numBins; ++i)
@@ -198,7 +237,7 @@ int main( int argc, char **argv )
             {
                 if (!bins[i + j * numBins].isEmpty())
                 {
-                    printf("Bin (%d, %d) has %d particles.\n", i, j, bins[i + j * numBins].numParticles());
+                    //printf("Bin (%d, %d) has %d particles.\n", i, j, bins[i + j * numBins].numParticles());
                     for(std::set<int>::iterator it = bins[i + j * numBins].particleIndices -> begin(); it != bins[i + j * numBins].particleIndices -> end(); )
                     {
                         if (bins[i + j * numBins].outOfBound(particles[*it])) 
@@ -221,8 +260,8 @@ int main( int argc, char **argv )
             movedParticles.pop();
         }
         sanityCheckOfBins(bins, numBins * numBins, n);
-        printf("The number of moved particles is: %d\n", count);
-        printf("dmin = %f, davg = %f\n", dmin, davg);
+        //printf("The number of moved particles is: %d\n", count);
+        //printf("dmin = %f, davg = %f\n", dmin, davg);
 
         if( find_option( argc, argv, "-no" ) == -1 )
         {

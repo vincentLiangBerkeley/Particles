@@ -111,11 +111,13 @@ void init_particles( int n, particle_t *p )
 
 void applyForceFromBin(bin_t bin, int particleIndex, particle_t *particles, double *dmin, double *davg, int *navg)
 {
+    //printf("Applying force from bin at (%f, %f)\n", bin.x, bin.y);
     if (bin.isEmpty()) return;
+    
     for (std::set<int>::iterator i = bin.particleIndices->begin(); i != bin.particleIndices -> end(); ++i)
     {
-       //printf("applied force from particle %d\n", *i);
        apply_force(particles[particleIndex], particles[*i], dmin, davg, navg);
+       //printf("applied force from particle %d\n", *i);
     }
 }
 
