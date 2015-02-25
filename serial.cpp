@@ -122,11 +122,11 @@ int main( int argc, char **argv )
                         for(std::set<int>::iterator it = bins[i + j * numBins].particleIndices -> begin(); it != bins[i + j * numBins].particleIndices -> end(); ++it)
                         {
                             applyForceFromBin(bins[1], *it, particles, &dmin, &davg, &navg);
-                            printf("1 left bottom corner absmin = %f\n", absmin);
-                            printf("1 left bottom corner dmin = %f\n", dmin);
+                            // printf("1 left bottom corner absmin = %f\n", absmin);
+                            // printf("1 left bottom corner dmin = %f\n", dmin);
                             applyForceFromBin(bins[numBins], *it, particles, &dmin, &davg, &navg);
-                            printf("2 left bottom corner absmin = %f\n", absmin);
-                            printf("2 left bottom corner dmin = %f\n", dmin);
+                            // printf("2 left bottom corner absmin = %f\n", absmin);
+                            // printf("2 left bottom corner dmin = %f\n", dmin);
                             applyForceFromBin(bins[1 + numBins], *it, particles, &dmin, &davg, &navg);
                             printf("3 left bottom corner absmin = %f\n", absmin);
                             printf("3 left bottom corner dmin = %f\n", dmin);
@@ -139,11 +139,11 @@ int main( int argc, char **argv )
                         for(std::set<int>::iterator it = bins[i + j * numBins].particleIndices -> begin(); it != bins[i + j * numBins].particleIndices -> end(); ++it)
                         {
                             applyForceFromBin(bins[i + j * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin above
-                            printf("1 right bottom corner absmin = %f\n", absmin);
-                            printf("1 right bottom corner dmin = %f\n", dmin);
+                            // printf("1 right bottom corner absmin = %f\n", absmin);
+                            // printf("1 right bottom corner dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + j * numBins - numBins], *it, particles, &dmin, &davg, &navg); // Bin on the left
-                            printf("2 right bottom corner absmin = %f\n", absmin);
-                            printf("2 right bottom corner dmin = %f\n", dmin);
+                            // printf("2 right bottom corner absmin = %f\n", absmin);
+                            // printf("2 right bottom corner dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + j * numBins - numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin on the left top corner
                             printf("3 right bottom corner absmin = %f\n", absmin);
                             printf("3 right bottom corner dmin = %f\n", dmin);
@@ -156,17 +156,17 @@ int main( int argc, char **argv )
                         for(std::set<int>::iterator it = bins[i + j * numBins].particleIndices -> begin(); it != bins[i + j * numBins].particleIndices -> end(); ++it)
                         {
                             applyForceFromBin(bins[i + (j - 1) * numBins], *it, particles, &dmin, &davg, &navg); // Bin on the left
-                            printf("1 i=0 normal edge row absmin = %f\n", absmin);
-                            printf("1 i=0 normal edge row dmin = %f\n", dmin);
+                            // printf("1 i=0 normal edge row absmin = %f\n", absmin);
+                            // printf("1 i=0 normal edge row dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + (j + 1) * numBins], *it, particles, &dmin, &davg, &navg); // Bin on the right
-                            printf("2 i=0 normal edge row absmin = %f\n", absmin);
-                            printf("2 i=0 normal edge row dmin = %f\n", dmin);
+                            // printf("2 i=0 normal edge row absmin = %f\n", absmin);
+                            // printf("2 i=0 normal edge row dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + j * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin on top of it
-                            printf("3 i=0 normal edge row absmin = %f\n", absmin);
-                            printf("3 i=0 normal edge row dmin = %f\n", dmin);
+                            // printf("3 i=0 normal edge row absmin = %f\n", absmin);
+                            // printf("3 i=0 normal edge row dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + (j - 1) * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin on the top left corner
-                            printf("4 i=0 normal edge row absmin = %f\n", absmin);
-                            printf("4 i=0 normal edge row dmin = %f\n", dmin);
+                            // printf("4 i=0 normal edge row absmin = %f\n", absmin);
+                            // printf("4 i=0 normal edge row dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + (j + 1) * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin on the top right corner
                             printf("5 i=0 normal edge row absmin = %f\n", absmin);
                             printf("5 i=0 normal edge row dmin = %f\n", dmin);
@@ -182,11 +182,11 @@ int main( int argc, char **argv )
                         for(std::set<int>::iterator it = bins[i + j * numBins].particleIndices -> begin(); it != bins[i + j * numBins].particleIndices -> end(); ++it)
                         {
                             applyForceFromBin(bins[i + (j + 1) * numBins], *it, particles, &dmin, &davg, &navg); // Bin on the right
-                            printf("1 left top corner absmin = %f\n", absmin);
-                            printf("1 left top corner dmin = %f\n", dmin);
+                            // printf("1 left top corner absmin = %f\n", absmin);
+                            // printf("1 left top corner dmin = %f\n", dmin);
                             applyForceFromBin(bins[i - j * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin below
-                            printf("2 left top corner absmin = %f\n", absmin);
-                            printf("2 left top corner dmin = %f\n", dmin);
+                            // printf("2 left top corner absmin = %f\n", absmin);
+                            // printf("2 left top corner dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + (j + 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the bottom right corner
                             printf("3 left top corner absmin = %f\n", absmin);
                             printf("3 left top corner dmin = %f\n", dmin);
@@ -198,11 +198,11 @@ int main( int argc, char **argv )
                         for(std::set<int>::iterator it = bins[i + j * numBins].particleIndices -> begin(); it != bins[i + j * numBins].particleIndices -> end(); ++it)
                         {
                             applyForceFromBin(bins[i + (j - 1) * numBins], *it, particles, &dmin, &davg, &navg); // Bin on the left
-                            printf("1 right top corner absmin = %f\n", absmin);
-                            printf("1 right top corner dmin = %f\n", dmin);
+                            // printf("1 right top corner absmin = %f\n", absmin);
+                            // printf("1 right top corner dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + j * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin below
-                            printf("2 right top corner absmin = %f\n", absmin);
-                            printf("2 right top corner dmin = %f\n", dmin);
+                            // printf("2 right top corner absmin = %f\n", absmin);
+                            // printf("2 right top corner dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + (j - 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the left bottom corner
                             printf("3 right top corner absmin = %f\n", absmin);
                             printf("3 right top corner dmin = %f\n", dmin);
@@ -214,17 +214,17 @@ int main( int argc, char **argv )
                         for(std::set<int>::iterator it = bins[i + j * numBins].particleIndices -> begin(); it != bins[i + j * numBins].particleIndices -> end(); ++it)
                         {
                             applyForceFromBin(bins[i + (j - 1) * numBins], *it, particles, &dmin, &davg, &navg); // Bin on the left
-                            printf("1 i=numBins-1 normal edge row absmin = %f\n", absmin);
-                            printf("1 i=numBins-1 normal edge row dmin = %f\n", dmin);
+                            // printf("1 i=numBins-1 normal edge row absmin = %f\n", absmin);
+                            // printf("1 i=numBins-1 normal edge row dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + (j + 1) * numBins], *it, particles, &dmin, &davg, &navg); // Bin on the right
-                            printf("2 i=numBins-1 normal edge row absmin = %f\n", absmin);
-                            printf("2 i=numBins-1 normal edge row dmin = %f\n", dmin);
+                            // printf("2 i=numBins-1 normal edge row absmin = %f\n", absmin);
+                            // printf("2 i=numBins-1 normal edge row dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + j * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin below
-                            printf("3 i=numBins-1 normal edge row absmin = %f\n", absmin);
-                            printf("3 i=numBins-1 normal edge row dmin = %f\n", dmin);
+                            // printf("3 i=numBins-1 normal edge row absmin = %f\n", absmin);
+                            // printf("3 i=numBins-1 normal edge row dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + (j - 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the left bottom corner
-                            printf("4 i=numBins-1 normal edge row absmin = %f\n", absmin);
-                            printf("4 i=numBins-1 normal edge row dmin = %f\n", dmin);
+                            // printf("4 i=numBins-1 normal edge row absmin = %f\n", absmin);
+                            // printf("4 i=numBins-1 normal edge row dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + (j + 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the right bottom corner
                             printf("5 i=numBins-1 normal edge row absmin = %f\n", absmin);
                             printf("5 i=numBins-1 normal edge row dmin = %f\n", dmin);
@@ -236,17 +236,17 @@ int main( int argc, char **argv )
                     for(std::set<int>::iterator it = bins[i + j * numBins].particleIndices -> begin(); it != bins[i + j * numBins].particleIndices -> end(); ++it)
                     {
                         applyForceFromBin(bins[i + j * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin above
-                        printf("1 j == 0 && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
-                        printf("1 j == 0 && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
+                        // printf("1 j == 0 && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
+                        // printf("1 j == 0 && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + j * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin below
-                        printf("2 j == 0 && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
-                        printf("2 j == 0 && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
+                        // printf("2 j == 0 && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
+                        // printf("2 j == 0 && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + (j + 1) * numBins], *it, particles, &dmin, &davg, &navg); // Bin on the right
-                        printf("3 j == 0 && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
-                        printf("3 j == 0 && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
+                        // printf("3 j == 0 && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
+                        // printf("3 j == 0 && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + (j + 1) * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin on the right top corner
-                        printf("4 j == 0 && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
-                        printf("4 j == 0 && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
+                        // printf("4 j == 0 && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
+                        // printf("4 j == 0 && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + (j + 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the right bottom corner
                         printf("5 j == 0 && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
                         printf("5 j == 0 && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
@@ -257,17 +257,17 @@ int main( int argc, char **argv )
                     for(std::set<int>::iterator it = bins[i + j * numBins].particleIndices -> begin(); it != bins[i + j * numBins].particleIndices -> end(); ++it)
                     {
                         applyForceFromBin(bins[i + j * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin above
-                        printf("1 j == (numBins - 1) && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
-                        printf("1 j == (numBins - 1) && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
+                        // printf("1 j == (numBins - 1) && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
+                        // printf("1 j == (numBins - 1) && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + j * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin below
-                        printf("2 j == (numBins - 1) && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
-                        printf("2 j == (numBins - 1) && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
+                        // printf("2 j == (numBins - 1) && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
+                        // printf("2 j == (numBins - 1) && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + (j - 1) * numBins], *it, particles, &dmin, &davg, &navg); // Bin on the left
-                        printf("3 j == (numBins - 1) && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
-                        printf("3 j == (numBins - 1) && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
+                        // printf("3 j == (numBins - 1) && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
+                        // printf("3 j == (numBins - 1) && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + (j - 1) * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin on the left top corner
-                        printf("4 j == (numBins - 1) && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
-                        printf("4 j == (numBins - 1) && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
+                        // printf("4 j == (numBins - 1) && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
+                        // printf("4 j == (numBins - 1) && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + (j - 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the left bottom corner
                         printf("5 j == (numBins - 1) && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
                         printf("5 j == (numBins - 1) && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
@@ -279,26 +279,26 @@ int main( int argc, char **argv )
                     for(std::set<int>::iterator it = bins[i + j * numBins].particleIndices -> begin(); it != bins[i + j * numBins].particleIndices -> end(); ++it)
                     {
                         applyForceFromBin(bins[i + (j - 1) * numBins], *it, particles, &dmin, &davg, &navg); // Bin on the left
-                        printf("1 inner bins absmin = %f\n", absmin);
-                        printf("1 inner bins dmin = %f\n", dmin);
+                        // printf("1 inner bins absmin = %f\n", absmin);
+                        // printf("1 inner bins dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + (j + 1) * numBins], *it, particles, &dmin, &davg, &navg); // Bin on the right
-                        printf("2 inner bins absmin = %f\n", absmin);
-                        printf("2 inner bins dmin = %f\n", dmin);
+                        // printf("2 inner bins absmin = %f\n", absmin);
+                        // printf("2 inner bins dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + j * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin above
-                        printf("3 inner bins absmin = %f\n", absmin);
-                        printf("3 inner bins dmin = %f\n", dmin);
+                        // printf("3 inner bins absmin = %f\n", absmin);
+                        // printf("3 inner bins dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + j * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin below
-                        printf("4 inner bins absmin = %f\n", absmin);
-                        printf("4 inner bins dmin = %f\n", dmin);
+                        // printf("4 inner bins absmin = %f\n", absmin);
+                        // printf("4 inner bins dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + (j - 1) * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin on the left top corner
-                        printf("5 inner bins absmin = %f\n", absmin);
-                        printf("5 inner bins dmin = %f\n", dmin);
+                        // printf("5 inner bins absmin = %f\n", absmin);
+                        // printf("5 inner bins dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + (j + 1) * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin on the right top corner
-                        printf("6 inner bins absmin = %f\n", absmin);
-                        printf("6 inner bins dmin = %f\n", dmin);
+                        // printf("6 inner bins absmin = %f\n", absmin);
+                        // printf("6 inner bins dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + (j - 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the left bottom corner
-                        printf("7 inner bins absmin = %f\n", absmin);
-                        printf("7 inner bins dmin = %f\n", dmin);
+                        // printf("7 inner bins absmin = %f\n", absmin);
+                        // printf("7 inner bins dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + (j + 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the right bottom corner
                         printf("8 inner bins absmin = %f\n", absmin);
                         printf("8 inner bins dmin = %f\n", dmin);
