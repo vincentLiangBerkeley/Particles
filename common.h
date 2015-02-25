@@ -24,28 +24,45 @@ typedef struct
   double ay;
 } particle_t;
 
+/*
+ * bin data structure
+ */
+typedef struct 
+{
+  double x;
+  double y;
+  double x_length;
+  double y_length;
+  std::set<int> *particleIndices; // Stores the indices of particles in this bin
+
+  inline bool isEmpty() {
+    return particleIndices -> empty();
+  }
+
+  inline int numParticles() {
+    return particleIndices -> size();
+  }
+
+  // Checks whether the particle is out of this bin
+  inline bool outOfBound(particle_t particle) {
+    return (particle.x < x || particle.x > x + x_length || particle.y < y || particle.y > y + y_length);
+  }
+
+  // Add a particle to the bin
+  inline void addParticle(int index) {
+    particleIndices -> insert(index);
+  }
+
+} bin_t;
+
 //
 //  timing routines
 //
 double read_timer( );
 
-typedef struct 
-{
-    double x;
-    double y;
-    double x_length;
-    double y_length;
-    std::set<int> *particleIndices; // Stores the indices of particles in this bin
-    inline bool isEmpty() {return particleIndices -> empty();}
-    inline int numParticles() {return particleIndices -> size();}
-    // Checks whether the particle is out of this bin
-    inline bool outOfBound(particle_t particle) {return (particle.x < x || particle.x > x + x_length || particle.y < y || particle.y > y + y_length);}
-    // Add a particle to the bin
-    inline void addParticle(int index) {particleIndices -> insert(index);}
-
-} bin_t;
-
-// Initialize all the bins
+/*
+ * Initialize all the bins
+ */
 bin_t* initBins();
 int getBinNum();
 // Apply force from a bin to a particle

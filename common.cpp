@@ -109,10 +109,15 @@ void init_particles( int n, particle_t *p )
     free( shuffle );
 }
 
+/*
+ * Interact two bins
+ */
 void applyForceFromBin(bin_t bin, int particleIndex, particle_t *particles, double *dmin, double *davg, int *navg)
 {
     //printf("Applying force from bin at (%f, %f)\n", bin.x, bin.y);
-    if (bin.isEmpty()) return;
+    if (bin.isEmpty()) {
+        return;
+    }
     
     for (std::set<int>::iterator i = bin.particleIndices->begin(); i != bin.particleIndices -> end(); ++i)
     {
@@ -132,19 +137,19 @@ void apply_force( particle_t &particle, particle_t &neighbor , double *dmin, dou
     double r2 = dx * dx + dy * dy;
     if( r2 > cutoff*cutoff )
         return;
-	if (r2 != 0)
+    if (r2 != 0)
         {
-	   if (r2/(cutoff*cutoff) < *dmin * (*dmin))
-	      *dmin = sqrt(r2)/cutoff;
+       if (r2/(cutoff*cutoff) < *dmin * (*dmin))
+          *dmin = sqrt(r2)/cutoff;
            (*davg) += sqrt(r2)/cutoff;
            (*navg) ++;
         }
-		
+        
     r2 = fmax( r2, min_r*min_r );
     double r = sqrt( r2 );
  
     
-	
+    
     //
     //  very simple short-range repulsive force
     //
