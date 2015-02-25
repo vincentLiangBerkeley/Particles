@@ -128,10 +128,11 @@ int main( int argc, char **argv )
                             // printf("2 left bottom corner absmin = %f\n", absmin);
                             // printf("2 left bottom corner dmin = %f\n", dmin);
                             applyForceFromBin(bins[1 + numBins], *it, particles, &dmin, &davg, &navg);
-                            printf("3 left bottom corner absmin = %f\n", absmin);
-                            printf("3 left bottom corner dmin = %f\n", dmin);
+                            // printf("3 left bottom corner absmin = %f\n", absmin);
+                            // printf("3 left bottom corner dmin = %f\n", dmin);
                         }
-                        // printf("left bottom corner absmin = %f\n", absmin);
+                        printf("1. left bottom corner absmin = %f\n", absmin);
+                        printf("1. left bottom corner dmin = %f\n", dmin);
                     }
                     else if (j == numBins - 1)    
                     {
@@ -145,10 +146,11 @@ int main( int argc, char **argv )
                             // printf("2 right bottom corner absmin = %f\n", absmin);
                             // printf("2 right bottom corner dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + j * numBins - numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin on the left top corner
-                            printf("3 right bottom corner absmin = %f\n", absmin);
-                            printf("3 right bottom corner dmin = %f\n", dmin);
+                            // printf("3 right bottom corner absmin = %f\n", absmin);
+                            // printf("3 right bottom corner dmin = %f\n", dmin);
                         }
-                        // printf("right bottom corner absmin = %f\n", absmin);
+                        printf("2. right bottom corner absmin = %f\n", absmin);
+                        printf("2. right bottom corner dmin = %f\n", dmin);
                     }
                     else
                     {
@@ -168,10 +170,11 @@ int main( int argc, char **argv )
                             // printf("4 i=0 normal edge row absmin = %f\n", absmin);
                             // printf("4 i=0 normal edge row dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + (j + 1) * numBins + 1], *it, particles, &dmin, &davg, &navg); // Bin on the top right corner
-                            printf("5 i=0 normal edge row absmin = %f\n", absmin);
-                            printf("5 i=0 normal edge row dmin = %f\n", dmin);
+                            // printf("5 i=0 normal edge row absmin = %f\n", absmin);
+                            // printf("5 i=0 normal edge row dmin = %f\n", dmin);
                         }
-                        // printf("i = 0 case normal edge row absmin = %f\n", absmin);
+                        printf("3. i = 0 case normal edge row absmin = %f\n", absmin);
+                        printf("3. i = 0 case normal edge row dmin = %f\n", dmin);
                     }
                 }
                 else if (i == numBins - 1)
@@ -188,9 +191,11 @@ int main( int argc, char **argv )
                             // printf("2 left top corner absmin = %f\n", absmin);
                             // printf("2 left top corner dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + (j + 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the bottom right corner
-                            printf("3 left top corner absmin = %f\n", absmin);
-                            printf("3 left top corner dmin = %f\n", dmin);
+                            // printf("3 left top corner absmin = %f\n", absmin);
+                            // printf("3 left top corner dmin = %f\n", dmin);
                         }
+                        printf("4. left top corner absmin = %f\n", absmin);
+                        printf("4. left top corner dmin = %f\n", dmin);
                     }
                     else if (j == numBins - 1)
                     {
@@ -204,9 +209,11 @@ int main( int argc, char **argv )
                             // printf("2 right top corner absmin = %f\n", absmin);
                             // printf("2 right top corner dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + (j - 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the left bottom corner
-                            printf("3 right top corner absmin = %f\n", absmin);
-                            printf("3 right top corner dmin = %f\n", dmin);
+                            // printf("3 right top corner absmin = %f\n", absmin);
+                            // printf("3 right top corner dmin = %f\n", dmin);
                         }
+                        printf("5. right top corner absmin = %f\n", absmin);
+                        printf("5. right top corner dmin = %f\n", dmin);
                     }
                     else
                     {
@@ -226,9 +233,11 @@ int main( int argc, char **argv )
                             // printf("4 i=numBins-1 normal edge row absmin = %f\n", absmin);
                             // printf("4 i=numBins-1 normal edge row dmin = %f\n", dmin);
                             applyForceFromBin(bins[i + (j + 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the right bottom corner
-                            printf("5 i=numBins-1 normal edge row absmin = %f\n", absmin);
-                            printf("5 i=numBins-1 normal edge row dmin = %f\n", dmin);
+                            // printf("5 i=numBins-1 normal edge row absmin = %f\n", absmin);
+                            // printf("5 i=numBins-1 normal edge row dmin = %f\n", dmin);
                         }
+                        printf("6. i=numBins-1 normal edge row absmin = %f\n", absmin);
+                        printf("6. i=numBins-1 normal edge row dmin = %f\n", dmin);
                     }
                 }
                 else if (j == 0 && i > 0 && i < (numBins - 1))
@@ -248,9 +257,11 @@ int main( int argc, char **argv )
                         // printf("4 j == 0 && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
                         // printf("4 j == 0 && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + (j + 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the right bottom corner
-                        printf("5 j == 0 && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
-                        printf("5 j == 0 && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
+                        // printf("5 j == 0 && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
+                        // printf("5 j == 0 && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
                     }
+                    printf("7. j == 0 && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
+                    printf("7. j == 0 && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
                 }
                 else if (j == (numBins - 1) && i > 0 && i < (numBins - 1))
                 {
@@ -269,9 +280,11 @@ int main( int argc, char **argv )
                         // printf("4 j == (numBins - 1) && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
                         // printf("4 j == (numBins - 1) && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + (j - 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the left bottom corner
-                        printf("5 j == (numBins - 1) && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
-                        printf("5 j == (numBins - 1) && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
+                        // printf("5 j == (numBins - 1) && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
+                        // printf("5 j == (numBins - 1) && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
                     }
+                    printf("8. j == (numBins - 1) && i > 0 && i < (numBins - 1) absmin = %f\n", absmin);
+                    printf("8. j == (numBins - 1) && i > 0 && i < (numBins - 1) dmin = %f\n", dmin);
                 }
                 else 
                 {
@@ -300,9 +313,11 @@ int main( int argc, char **argv )
                         // printf("7 inner bins absmin = %f\n", absmin);
                         // printf("7 inner bins dmin = %f\n", dmin);
                         applyForceFromBin(bins[i + (j + 1) * numBins - 1], *it, particles, &dmin, &davg, &navg); // Bin on the right bottom corner
-                        printf("8 inner bins absmin = %f\n", absmin);
-                        printf("8 inner bins dmin = %f\n", dmin);
+                        // printf("8 inner bins absmin = %f\n", absmin);
+                        // printf("8 inner bins dmin = %f\n", dmin);
                     }
+                    printf("9. inner bins absmin = %f\n", absmin);
+                    printf("9. inner bins dmin = %f\n", dmin);
                 }
 
                 if( find_option( argc, argv, "-no" ) == -1 )
