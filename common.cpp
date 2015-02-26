@@ -120,10 +120,7 @@ void applyForceFromBin(bin_t bin, int particleIndex, particle_t *particles, doub
     }
     
     for (std::set<int>::iterator i = bin.particleIndices->begin(); i != bin.particleIndices -> end(); ++i)
-    {
        apply_force(particles[particleIndex], particles[*i], dmin, davg, navg);
-       //printf("applied force from particle %d\n", *i);
-    }
 }
 
 //
