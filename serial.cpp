@@ -7,32 +7,6 @@
 #include <set>
 #include "common.h"
 using namespace std;
-
-
-bool sanityCheckOfBins(bin_t *bins, int binSize, int n)
-{
-    // This is for insanity check
-    int sum = 0;
-    for (int i = 0; i < binSize; ++i){
-        //printf("bin %d contains %d particles\n", i, bins[i].numParticles());
-        sum += bins[i].numParticles();
-    }
-
-    // printf("The total number of particles in the bins is %d\n", sum);
-    return sum == n;
-}
-
-void assignParticleToBin(bin_t *bins, particle_t *particles, int index, int numBins)
-{
-    double binLength = bins[0].x_length;
-    int row = int(particles[index].x / binLength);
-    if (row == numBins) row = numBins - 1;
-    int col = int(particles[index].y / binLength);
-    if (col == numBins) col = numBins - 1;
-    //printf("Assigning particle %d at (%f, %f) to bin (%d, %d)\n", index, particles[index].x, particles[index].y, row, col);
-    bins[row + col * numBins].addParticle(index);
-}
-
 //
 //  benchmarking program
 //
@@ -70,12 +44,9 @@ int main( int argc, char **argv )
     double simulation_time = read_timer( );
 
     // Here is a test for the "bin" struct
-    bin_t* bins = initBins();
-    int numBins = getBinNum();
-
-    // We have to iterate through all the particles and put them in corresponding bins.
-    for (int i = 0; i < n; ++i)
-        assignParticleToBin(bins, particles, i, numBins);
+    bin_t *bins = new bin_t[NUM_BINS];
+    init_bins(bins); // O(bins)
+    for(int i = 0; i < n; i ++) assign_particles_to_bin(particles[i], bins); // O(n)
 
     for (int step = 0; step < NSTEPS; ++step)
     {
@@ -85,61 +56,19 @@ int main( int argc, char **argv )
 
         /*
         Compute forces, but notice only compute forces from neighboring bins
-         */    
-        for (int i = 0; i < numBins; ++i)
-        {
-            for (int j = 0; j < numBins; ++j)
-            {
-                //printf("Checking bin (%d, %d)\n", i, j);
-                if(bins[i + j * numBins].isEmpty()) continue;
-        		for(std::set<int>::iterator it = bins[i + j * numBins].particleIndices -> begin(); it != bins[i + j * numBins].particleIndices -> end(); ++it)
-        		{
-        		    particles[*it].ax = 0;
-        		    particles[*it].ay = 0;
-
-                    // Forces from within the bin
-                    applyForceFromBin(bins[i + j * numBins], *it, particles, &dmin, &davg, &navg);
-
-                    // Force from left
-                    if (j > 0) applyForceFromBin(bins[i + (j - 1) * numBins], *it, particles, &dmin, &davg, &navg);
-
-                    // Force From right
-                    if (j < numBins - 1) applyForceFromBin(bins[i + (j + 1) * numBins], *it, particles, &dmin, &davg, &navg);
-
-                    // Force from above
-                    if (i < numBins - 1) applyForceFromBin(bins[i + 1 + j * numBins], *it, particles, &dmin, &davg, &navg);
-
-                    // Force from below
-                    if (i > 0) applyForceFromBin(bins[i - 1 + j * numBins], *it, particles, &dmin, &davg, &navg);
-
-                    // Force from north-west
-                    if ((i < numBins - 1) && (j > 0)) applyForceFromBin(bins[i + 1 + (j - 1) * numBins], *it, particles, &dmin, &davg, &navg);
-
-                    // Force from north-east
-                    if ((i < numBins - 1) && (j < numBins - 1)) applyForceFromBin(bins[i + 1 + (j + 1) * numBins], *it, particles, &dmin, &davg, &navg);
-
-                    // Force from south-west
-                    if ((i > 0) && (j > 0)) applyForceFromBin(bins[i - 1 + (j - 1) * numBins], *it, particles, &dmin, &davg, &navg);
-
-                    // Force from south-east
-                    if ((i > 0) && (j < numBins - 1)) applyForceFromBin(bins[i - 1 + (j + 1) * numBins], *it, particles, &dmin, &davg, &navg);
-
-        		}
-            }
-        }
+         */           
+        for (int row = 0; row < BINS_PER_SIDE; ++row)
+            for (int col = 0; col < BINS_PER_SIDE; ++col)
+                compute_forces_for_bin(bins, row, col, &dmin, &davg, &navg);
+       
         for(int i = 0; i < n; i ++) 
             move(particles[i]);
 
         // Determine the new bins of the particles
         // Try just simply rebinning all the particles
-        for (int i = 0; i < numBins; ++i){
-            for (int j = 0; j < numBins; ++j){
-                bins[i + j * numBins].particleIndices -> clear();
-            }
-        }
-        for (int i = 0; i < n; ++i){
-            assignParticleToBin(bins, particles, i, numBins);
-        }
+        init_bins(bins);
+        for (int i = 0; i < n; ++i)
+            assign_particles_to_bin(particles[i], bins);
 
         if( find_option( argc, argv, "-no" ) == -1 )
         {
@@ -193,7 +122,6 @@ int main( int argc, char **argv )
     if( fsum )
         fclose( fsum );    
     free( particles );
-    free( bins );
     if( fsave )
         fclose( fsave );
     

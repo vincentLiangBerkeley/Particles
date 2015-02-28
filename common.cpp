@@ -9,6 +9,9 @@
 #include "common.h"
 
 double size;
+// Define the extern variables
+double bin_size;
+int bins_per_side;
 
 //
 //  tuned constants
@@ -38,37 +41,84 @@ double read_timer( )
 
 //
 //  keep density constant
+//  This will also set constants for bin_t
 //
 void set_size( int n )
 {
     size = sqrt( density * n );
+
+    bin_size = sqrt(5 * density); // This defines the extern double, and we define it this way so that each bin contains about 5 particles
+    bins_per_side = floor(size / bin_size) + 1;
+
+    assert(bin_size > 2 * cutoff);
+    printf("bin_size = %f, bins_per_side = %d, total num of bins = %d\n", bin_size, bins_per_side, bins_per_side * bins_per_side);
 }
 
-int getBinNum()
-{
-    return int(size / cutoff);
-}
+bin_t::bin_t()
+    :numParticles(0) 
+    {}
 
-bin_t* initBins()
+// This function just clears all the bins, but needs the memory of the bins to be allocated elsewhere
+void init_bins(bin_t *bins)
 {
-    int numBins = getBinNum(); // The number of bins in each row and column
-    bin_t *bins = (bin_t*) malloc(numBins * numBins * sizeof(bin_t));
-    for (int i = 0; i < numBins; ++i)
-    {
-        for (int j = 0; j < numBins; ++j)
-        {
-            // This is the (i, j)th bin in the grid
-            bins[i + j * numBins].x = j * cutoff;
-            bins[i + j * numBins].y = i * cutoff;
-            bins[i + j * numBins].x_length = cutoff;
-            bins[i + j * numBins].y_length = cutoff;
-            bins[i + j * numBins].particleIndices = new std::set<int>;
-            // Adjust for the bins on the edges of the grid
-            if (j == numBins - 1) bins[i + j * numBins].x_length = size - (numBins - 1) * cutoff;
-            if (i == numBins - 1) bins[i + j * numBins].y_length = size - (numBins - 1) * cutoff;
-        }
+    for (int i = 0; i < NUM_BINS; ++i){
+        bins[i].numParticles = 0;
+        bins[i].particles.clear();
     }
-    return bins;
+}
+
+void assign_particles_to_bin(particle_t &p, bin_t *bins)
+{
+    int row = floor(p.x / BIN_SIZE);
+    int col = floor(p.y / BIN_SIZE);
+
+    int index = row + col * BINS_PER_SIDE;
+    bins[index].particles.push_back(&p);
+    bins[index].numParticles ++;
+}
+
+// This compute all forces applied to particles in the (row, col)th bin
+void compute_forces_for_bin(bin_t *bins, int row, int col, double *dmin, double *davg, int *navg)
+{
+    int index = row + col * BINS_PER_SIDE;
+
+    for (int p = 0; p < bins[index].numParticles; ++p)
+    {
+        (*bins[index].particles[p]).ax = 0;
+        (*bins[index].particles[p]).ay = 0;
+
+    #define FORCE_FROM_BIN(i) \
+        for (int p2 = 0; p2 < bins[i].numParticles; ++p2) \
+            apply_force(*bins[index].particles[p], *bins[i].particles[p2], dmin, davg, navg);
+        
+        // Forces from inside the bin
+        FORCE_FROM_BIN(index);
+
+        // Forces from left
+        if (col > 0) FORCE_FROM_BIN(index - BINS_PER_SIDE);
+
+        // Forces from right
+        if (col < BINS_PER_SIDE - 1) FORCE_FROM_BIN(index + BINS_PER_SIDE);
+
+        // Forces from above
+        if (row < BINS_PER_SIDE - 1) FORCE_FROM_BIN(index + 1);
+
+        // Forces from below
+        if (row > 0) FORCE_FROM_BIN(index - 1);
+
+        // Forces from north east
+        if (row < BINS_PER_SIDE - 1 && col > 0) FORCE_FROM_BIN(index + 1 - BINS_PER_SIDE);
+
+        // Forces from north west
+        if (row < BINS_PER_SIDE - 1 && col < BINS_PER_SIDE - 1) FORCE_FROM_BIN(index + 1 + BINS_PER_SIDE);
+
+        // Forces from south east
+        if (row > 0 && col > 0) FORCE_FROM_BIN(index - 1 - BINS_PER_SIDE);
+
+        // Forces from south west
+        if (row > 0 && col < BINS_PER_SIDE - 1) FORCE_FROM_BIN(index - 1 + BINS_PER_SIDE);
+    #undef FORCE_FROM_BIN    
+    }
 }
 
 //
@@ -107,20 +157,6 @@ void init_particles( int n, particle_t *p )
         p[i].vy = drand48()*2-1;
     }
     free( shuffle );
-}
-
-/*
- * Interact two bins
- */
-void applyForceFromBin(bin_t bin, int particleIndex, particle_t *particles, double *dmin, double *davg, int *navg)
-{
-    //printf("Applying force from bin at (%f, %f)\n", bin.x, bin.y);
-    if (bin.isEmpty()) {
-        return;
-    }
-    
-    for (std::set<int>::iterator i = bin.particleIndices->begin(); i != bin.particleIndices -> end(); ++i)
-       apply_force(particles[particleIndex], particles[*i], dmin, davg, navg);
 }
 
 //

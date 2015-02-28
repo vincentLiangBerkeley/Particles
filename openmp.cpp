@@ -40,6 +40,11 @@ int main( int argc, char **argv )
     //
     double simulation_time = read_timer( );
 
+    // Initialize the bins
+    bin_t *bins = new bin_t[NUM_BINS];
+    init_bins(bins);
+    for(int i = 0; i < n; i ++) assign_particles_to_bin(particles[i], bins);
+
     #pragma omp parallel private(dmin) 
     {
     numthreads = omp_get_num_threads();
@@ -47,19 +52,17 @@ int main( int argc, char **argv )
     {
         navg = 0;
         davg = 0.0;
-	dmin = 1.0;
+	    dmin = 1.0;
         //
         //  compute all forces
         //
         #pragma omp for reduction (+:navg) reduction(+:davg)
-        for( int i = 0; i < n; i++ )
-        {
-            particles[i].ax = particles[i].ay = 0;
-            for (int j = 0; j < n; j++ )
-                apply_force( particles[i], particles[j],&dmin,&davg,&navg);
-        }
-        
-		
+        /*
+        Compute forces, but notice only compute forces from neighboring bins
+         */           
+        for (int row = 0; row < BINS_PER_SIDE; ++row)
+            for (int col = 0; col < BINS_PER_SIDE; ++col)
+                compute_forces_for_bin(bins, row, col, &dmin, &davg, &navg);
         //
         //  move particles
         //
@@ -79,14 +82,18 @@ int main( int argc, char **argv )
           }
 
           #pragma omp critical
-	  if (dmin < absmin) absmin = dmin; 
+	      if (dmin < absmin) absmin = dmin; 
 		
           //
           //  save if necessary
           //
           #pragma omp master
-          if( fsave && (step%SAVEFREQ) == 0 )
-              save( fsave, n, particles );
+          {
+              init_bins(bins);
+              for(int i = 0; i < n; i ++) assign_particles_to_bin(particles[i], bins);
+              if( fsave && (step%SAVEFREQ) == 0 )
+                  save( fsave, n, particles );
+          }
         }
     }
 }

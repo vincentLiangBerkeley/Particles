@@ -5,7 +5,7 @@
 #
 CC = g++
 MPCC = CC
-OPENMP = -mp
+OPENMP = -fopenmp
 CFLAGS = -O3
 LIBS =
 

@@ -18,7 +18,7 @@ Week1 Feb 20 - Feb 27:
     ✔ The hard part is moving the particles @done (15-02-22 00:20)
       Whenever we move a particle, we have to determine its new "bin", then delete it from the original bin, add it to the new one
       This also means that the data structure we use for the list of particles should support insert and delete efficiently, i.e STL -> Set
-    ☐ One problem is that it seems most particles are not interacting
+    ✔ One problem is that it seems most particles are not interacting @done (15-02-25 18:22)
     ☐ I have changed the implementation of bins so that each bin holds a set of indices of particles
     ☐ There is segmentation fault after some iterations and I dont know how to solve them.
   ☐ Implement the pthreads algorithm(details need to be confirmed)

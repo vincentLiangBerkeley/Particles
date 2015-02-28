@@ -1,6 +1,6 @@
 #ifndef __CS267_COMMON_H__
 #define __CS267_COMMON_H__
-#include <set>
+#include <vector>
 
 inline int min( int a, int b ) { return a < b ? a : b; }
 inline int max( int a, int b ) { return a > b ? a : b; }
@@ -27,46 +27,34 @@ typedef struct
 /*
  * bin data structure
  */
-typedef struct 
+struct bin_t 
 {
-  double x;
-  double y;
-  double x_length;
-  double y_length;
-  std::set<int> *particleIndices; // Stores the indices of particles in this bin
+  std::vector<particle_t*> particles; // Stores pointers to particles
 
-  inline bool isEmpty() {
-    return particleIndices -> empty();
-  }
+  int numParticles;
+  bin_t();
+};
 
-  inline int numParticles() {
-    return particleIndices -> size();
-  }
+// The size of each bin
+extern double bin_size;
+// The number of bins in each row and column
+extern int bins_per_side;
+#define BIN_SIZE bin_size
+#define BINS_PER_SIDE bins_per_side
+#define NUM_BINS bins_per_side * bins_per_side
 
-  // Checks whether the particle is out of this bin
-  inline bool outOfBound(particle_t particle) {
-    return (particle.x < x || particle.x > x + x_length || particle.y < y || particle.y > y + y_length);
-  }
-
-  // Add a particle to the bin
-  inline void addParticle(int index) {
-    particleIndices -> insert(index);
-  }
-
-} bin_t;
+/*
+Functions associated with bins
+ */
+/// Clear all the bins and remove any points from each
+void init_bins(bin_t *bins);
+void assign_particles_to_bin(particle_t &p, bin_t *bins);
+void compute_forces_for_bin(bin_t *bins, int row, int col, double *dmin, double *davg, int *navg);
 
 //
 //  timing routines
 //
 double read_timer( );
-
-/*
- * Initialize all the bins
- */
-bin_t* initBins();
-int getBinNum();
-// Apply force from a bin to a particle
-void applyForceFromBin(bin_t bin, int particleIndex, particle_t *particles, double *dmin, double *davg, int *navg);
 
 //
 //  simulation routines
